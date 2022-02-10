@@ -65,15 +65,13 @@ class Leakix:
         results = list()
 
         r = self.session.get(
-            "https://leakix.net/search?scope={scope}&q={query}".format(query=query, scope=self.scope),
+            "https://leakix.net/search?scope={scope}&q={query}".format(
+                query=query, scope=self.scope
+            ),
             headers=self._headers,
         )
-        if r.status_code != 200:
-            print("Connection Error: search leaks")
-            sys.exit(0)
-        if r.json() == None:
-            print("{query}: no resuexpireslts".format(query))
-            sys.exit(0)
+        if r.status_code != 200 or r.json() == None:
+            return []
 
         for data in r.json():
             if data["ip"] == "":
