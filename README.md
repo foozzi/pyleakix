@@ -5,8 +5,8 @@
 ```python
 from Leakix import Leakix
 
-
-leakix = Leakix("login", "password")
+""" scope: leak or service  """
+leakix = Leakix("login", "password", scope="leak")
 leakix.check_auth()
 print(leakix.search_leaks("test"))
 ```

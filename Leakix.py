@@ -6,9 +6,10 @@ import time
 
 
 class Leakix:
-    def __init__(self, login: str, password: str):
+    def __init__(self, login: str, password: str, scope: str = "leak"):
         self.login = login
         self.password = password
+        self.scope = scope
         self.session = requests.session()
         self.csrf = None
 
@@ -33,7 +34,7 @@ class Leakix:
         except FileNotFoundError:
             return False
 
-    def auth(self):
+    def auth(self) -> bool:
         r = self.session.post(
             "https://leakix.net/auth/login",
             data={
@@ -60,11 +61,11 @@ class Leakix:
 
         return True
 
-    def search_leaks(self, query: str):
+    def search_leaks(self, query: str) -> list:
         results = list()
 
         r = self.session.get(
-            "https://leakix.net/search?scope=leak&q={query}".format(query=query),
+            "https://leakix.net/search?scope={scope}&q={query}".format(query=query, scope=self.scope),
             headers=self._headers,
         )
         if r.status_code != 200:
